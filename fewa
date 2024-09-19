@@ -1,23 +1,23 @@
---// Enhanced Obfuscator
-local function obfuscator(source, VarName, WaterMark)
+--// Advanced Obfuscator for Roblox
+function advancedObfuscate(source, VarName, WaterMark)
     warn("Started advancedObfuscation")
 
-    -- Standardwerte für Variablen
+    -- Customizable variables and default values
     local Variable = VarName or "Taurus_"
     local WM = WaterMark or "WaterMark | Secure by RBLXXHEATER"
 
-    -- Standard-Source wenn nichts angegeben ist
+    -- Default source if none provided
     if source == nil then
         source = [[print("Hello World!")]]
     end
 
-    -- Messung der Zeit
+    -- Time measurement
     local ticks = tick()
 
-    -- Generiere das Watermark
+    -- Generate watermark
     WM = "--[[".."\n".. tostring(WM) .."\n".."]]--".."\n\n"
 
-    -- Zufälliger Name Generator
+    -- Random name generator
     local randomName = function(length)
         local letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         local name = ""
@@ -28,7 +28,7 @@ local function obfuscator(source, VarName, WaterMark)
         return name
     end
 
-    -- String zu Binär konvertieren
+    -- Binary conversion for strings
     local StringToBinary = function(String)
         local BinaryString = {}
         for i = 1, #String do
@@ -38,7 +38,7 @@ local function obfuscator(source, VarName, WaterMark)
         return table.concat(BinaryString, " ")
     end
 
-    -- Binäre Daten zufällig hinzufügen
+    -- Generate random binary data
     local add_binary = function(number, s)
         local phrases = {
             "Deobfuscate this!",
@@ -57,51 +57,53 @@ local function obfuscator(source, VarName, WaterMark)
         return s
     end
 
-    -- XOR-Verschlüsselung
+    -- Encrypt the source using XOR (bit32.bxor for Roblox compatibility)
     local XOR = function(str, key)
         local res = {}
         for i = 1, #str do
-            local xorChar = string.char(bit.bxor(str:byte(i), key:byte((i - 1) % #key + 1)))
+            local xorChar = string.char(bit32.bxor(str:byte(i), key:byte((i - 1) % #key + 1)))
             table.insert(res, "\\" .. xorChar:byte())
         end
         return table.concat(res, ", ")
     end
 
-    -- Verschlüsselungsschlüssel
+    -- Example encryption key
     local encryptionKey = randomName(16)
     local encryptedSource = XOR(source, encryptionKey)
 
-    -- Generierung von komplexen Strukturen
+    -- Generate more complex structures
     local SourceByte = [[local ]]..Variable..randomName(15)..[[ = {]]..encryptedSource..[[}]]
     local Loadstring = [[local ]]..Variable..randomName(15)..[[ = loadstring(table.concat({]]..XOR("return function(bytes) if type(bytes) == 'table' then return loadstring(table.concat(bytes))() else return loadstring(bytes)() end end", encryptionKey)..[[}))()]]
 
-    -- Generierung von Fake-Code
+    -- Complex fake code generator
     local fake_code = function(number)
         local t = {}
         for i = 1, number do
             local createVar = Variable .. randomName(15)
             local fakeData = randomName(math.random(100, 200))
             local fakeByte = ""
-            for x = 1, #fakeData do fakeByte = fakeByte .. string.byte(fakeData:sub(x, x)) .. ", " end
+            for x = 1, #fakeData do 
+                fakeByte = fakeByte .. string.byte(fakeData:sub(x, x)) .. ", " 
+            end
             table.insert(t, [[local ]]..createVar..[[ = {]]..fakeByte..[[}; ]]..[[local ]]..createVar.." = "..Variable..randomName(15)..[[()]].."; ")
         end
         return table.concat(t)
     end
 
-    -- Kombination von allem
+    -- Combine everything
     local obfuscated = WM .. Loadstring .. "; " .. add_binary(math.random(30, 50), "") .. SourceByte .. "; " .. fake_code(math.random(2, 4))
 
-    -- Kopiere den obfuskierten Code in die Zwischenablage
-    setclipboard(obfuscated)
+    -- Output the obfuscated code
+    print(obfuscated)
 
-    -- Zeige die Zeit an
+    -- Time taken to obfuscate
     warn("Done obfuscating in "..tostring(tick() - ticks).." seconds")
-    return
+    return obfuscated
 end
 
 --// Module
-return function(source,CustomVarName,WaterMark)
+return function(source, CustomVarName, WaterMark)
     task.spawn(function()
-        obfuscator(source,CustomVarName,WaterMark)
+        advancedObfuscate(source, CustomVarName, WaterMark)
     end)
 end
