@@ -28,11 +28,15 @@ function advancedObfuscate(source, VarName, WaterMark)
         return name
     end
 
-    -- Binary conversion for strings
+    -- Manually convert a string to binary (fixes the format issue)
     local StringToBinary = function(String)
         local BinaryString = {}
         for i = 1, #String do
-            local Binary = string.format("%08b", String:byte(i))
+            local Byte = string.byte(String:sub(i, i))
+            local Binary = ""
+            for j = 7, 0, -1 do
+                Binary = Binary .. (math.floor(Byte / 2^j) % 2)
+            end
             table.insert(BinaryString, Binary)
         end
         return table.concat(BinaryString, " ")
